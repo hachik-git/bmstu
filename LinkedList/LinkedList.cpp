@@ -30,7 +30,8 @@ struct node {
 	}
 };
 
-class LinkedList {
+class LinkedList{
+  
 private:
 	int _count = 0;
 
@@ -147,7 +148,7 @@ public:
 
 int main()
 {
-	//setlocale(LC_ALL, "Russian");
+	setlocale(LC_ALL, "Russian");
 	LinkedList l;
 
 	IP a;
@@ -163,7 +164,7 @@ int main()
 
 	node* cur = l.first;
 
-	printf("Р’С‹РІРѕРґ СЃРїРёСЃРєР° IP\n");
+	printf("Вывод списка IP\n");
 	while (cur)
 	{
 		cur->print();
@@ -171,7 +172,7 @@ int main()
 		cur = cur->next;
 	}
 
-	printf("РЈРґР°Р»РµРЅРёРµ РїРѕСЃР»РµРґРЅРёС… 5 СЌР»РµРјРµРЅС‚РѕРІ\n");
+	printf("Удаление последних 5 элементов\n");
 	for (int i = 1; i <= 5; i++)
 		cur = l.pop(1);
 
@@ -179,15 +180,15 @@ int main()
 	for (int i = 0; i < 2; i++)
 		cur = cur->next;
 
-	printf("РЈРґР°Р»РµРЅРёРµ 3-РіРѕ СЃ РЅР°С‡Р°Р»Р° СЌР»РµРјРµРЅС‚Р°\n"); 
+	printf("Удаление 3-го с начала элемента\n"); 
 	l.remove(cur, 1);
 
-	printf("РЈРґР°Р»РµРЅРёРµ 2-РіРѕ СЃ РЅР°С‡Р°Р»Р° СЌР»РµРјРµРЅС‚Р°\n");
+	printf("Удаление 2-го с начала элемента\n");
 	l.remove(1, true);
 
 	cur = l.first;
 
-	printf("Р’С‹РІРѕРґ СЃРїРёСЃРєР° IP\n");
+	printf("Вывод списка IP\n");
 	while (cur)
 	{
 		cur->print();
