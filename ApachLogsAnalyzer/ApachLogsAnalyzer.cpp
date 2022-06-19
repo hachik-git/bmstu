@@ -94,7 +94,7 @@ access_log_rec* read_logs(int* qnt)
 {
 	*qnt = 0;
 	access_log_rec* logs = (access_log_rec*)malloc(sizeof(access_log_rec));
-	char log_file_name[255] = "logs/access.2021.04.01.log";
+	char log_file_name[255] = "logs/access.2021.04.01.log"; 
 	FILE* f;
 	fopen_s(&f, log_file_name, "r");
 	if (f == NULL)
