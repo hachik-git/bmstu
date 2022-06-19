@@ -7,24 +7,6 @@
 #include <iostream>
 #include <cstdio>
 
-int** dynamic_array_alloc(int row_count, int col_count)
-{
-    int** a = (int**)malloc(row_count * sizeof(int*));    
-
-    for (int i = 0; i < row_count;)
-        a[i++] = (int*)malloc(col_count * sizeof(int));
-
-    return a;
-}
-
-void dynamic_array_free(int** a, int row_count)
-{
-    for (int i = 0; i < row_count; i++)
-        free(a[i]);
-    
-    free(a);
-}
-
 void iswap(int* a, int* b)
 {
     int tmp = *a;    
@@ -89,61 +71,30 @@ int main(void)
     int al = 10;
 
     srand(42);//srand(time(NULL));
+    
     for (int i = 0; i < al; i++)
         ia[i] = rand();
 
+    printf("Массив для сортировки:\n");
     for (int i = 0; i < al; i++)
-        printf("%d - %d\n", i, ia[i]);
+        printf("  %d - %d\n", i, ia[i]);
     
     printf("\n");
 
     bubbleSort(&ia[0], &ia[10]);
+    printf("Отсортирован пузырьком:\n");
     for (int i = 0; i < al; i++)
         printf("%d - %d\n", i, ia[i]);
 
+    srand(42);
+
+    for (int i = 0; i < al; i++)
+        ia[i] = rand();
+    printf("\n"); 
     shakerSort(&ia[0], &ia[10]);
+    printf("Отсортирован шейкером:\n");
     for (int i = 0; i < al; i++)
         printf("%d - %d\n", i, ia[i]);
 
     return 0;
-
-    /*
-    int rc, cc; // Row_Count, Col_Count or an array
-    
-    printf("Enter row count:\n");
-    scanf_s("%d", &rc);
-    printf("Enter col count:\n");
-    scanf_s("%d", &cc);
-
-    int** a = dynamic_array_alloc(rc, cc);
-    
-    printf("Enter array elements:\n");
-    for (int r = 0; r < rc; r++)
-        for (int c = 0; c < cc; c++)
-        {
-            printf("[%d,%d]: ", r+1, c+1);
-            scanf_s("%d", &a[r][c]);
-        }
-
-    printf("Input array:\n");
-    for (int r = 0; r < rc; r++)
-    {
-        for (int c = 0; c < cc; c++)
-            printf(" %d", a[r][c]);
-
-        printf("\n");
-    }
-
-    for (int i = 0; i < rc; i++)
-        isort(a[i], cc, i%2 == 1);
-
-    printf("Sorted array:");
-    for (int r = 0; r < rc; r++)
-    {
-        printf(r % 2 == 0 ? "\n %d (asc): " : "\n %d (desc): ", r+1);
-        for (int c = 0; c < cc; c++)
-            printf(" %d", a[r][c]);
-    }
-
-    dynamic_array_free(a, rc);*/
 }
