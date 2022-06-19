@@ -83,12 +83,7 @@ void shakerSort(int* l, int* r) {
 }
 
 int main(void)
-{   
-    /*char x = 30;
-    int y = 10;
-    int z = x * 10 + 200;
-    printf("%d", z);
-    return 0;*/
+{
     setlocale(LC_ALL, "Russian");
     int ia[10];
     int al = 10;
