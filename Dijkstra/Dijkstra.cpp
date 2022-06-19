@@ -52,6 +52,7 @@ void TrimNewLine(char* s)
 void generate_prices()
 {
 	setlocale(LC_ALL, "Russian");
+  
 	char city[100];
 	char** cities = (char**)malloc(100 * sizeof(char*));
 	int q = 0;
@@ -271,19 +272,8 @@ void Dijkstra(int **GR, int qnt, int start)
 	else cout << m << " > " << i + 1 << " = " << "маршрут недоступен" << endl;*/
 }
 
-union ttt {
-	char c[2];
-	short int i;
-};
-
 int main()
 {
-	ttt t;
-	t.i = 12;
-	printf("%x\n", t.c[0]);
-	printf("%x\n", t.c[1]);
-	return 0;
-
 	setlocale(LC_ALL, "Russian");
 	//generate_prices(); // генерирует прайсы случайным образом
 
