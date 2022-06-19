@@ -7,7 +7,7 @@ struct char_info {
 };
 
 
-//получает строку произвольной длины до нажатия Enter; len - выходной параметр - длина полученной строки
+//РїРѕР»СѓС‡Р°РµС‚ СЃС‚СЂРѕРєСѓ РїСЂРѕРёР·РІРѕР»СЊРЅРѕР№ РґР»РёРЅС‹ РґРѕ РЅР°Р¶Р°С‚РёСЏ Enter; len - РІС‹С…РѕРґРЅРѕР№ РїР°СЂР°РјРµС‚СЂ - РґР»РёРЅР° РїРѕР»СѓС‡РµРЅРЅРѕР№ СЃС‚СЂРѕРєРё
 char* get_string(int* len) {
 	*len = 0;
 	int capacity = 1;
@@ -41,7 +41,7 @@ char* get_string()
 }
 
 
-//возвращает индекс символа в массиве; все параметры входные, qnt - длина переданного массива
+//РІРѕР·РІСЂР°С‰Р°РµС‚ РёРЅРґРµРєСЃ СЃРёРјРІРѕР»Р° РІ РјР°СЃСЃРёРІРµ; РІСЃРµ РїР°СЂР°РјРµС‚СЂС‹ РІС…РѕРґРЅС‹Рµ, qnt - РґР»РёРЅР° РїРµСЂРµРґР°РЅРЅРѕРіРѕ РјР°СЃСЃРёРІР°
 int GetCharIndex(char c, char_info* counter, int qnt)
 {
 	for (int i = 0; i < qnt; i++)
@@ -52,7 +52,7 @@ int GetCharIndex(char c, char_info* counter, int qnt)
 }
 
 
-//возвращает ссылку на массив char_info; len - выходной параметр - длина полученного массива
+//РІРѕР·РІСЂР°С‰Р°РµС‚ СЃСЃС‹Р»РєСѓ РЅР° РјР°СЃСЃРёРІ char_info; len - РІС‹С…РѕРґРЅРѕР№ РїР°СЂР°РјРµС‚СЂ - РґР»РёРЅР° РїРѕР»СѓС‡РµРЅРЅРѕРіРѕ РјР°СЃСЃРёРІР°
 char_info* GetCounter(char* s, int* len) {
 	*len = 0;
 	int capacity = 1;
@@ -78,7 +78,7 @@ char_info* GetCounter(char* s, int* len) {
 	return counter;
 }
 
-//обмен местами элементов массива
+//РѕР±РјРµРЅ РјРµСЃС‚Р°РјРё СЌР»РµРјРµРЅС‚РѕРІ РјР°СЃСЃРёРІР°
 void SwapIndexes(char_info* counter, int index1, int index2)
 {
 	char_info tmp = counter[index1];
@@ -87,7 +87,7 @@ void SwapIndexes(char_info* counter, int index1, int index2)
 }
 
 
-//сортировка массива по числу символов
+//СЃРѕСЂС‚РёСЂРѕРІРєР° РјР°СЃСЃРёРІР° РїРѕ С‡РёСЃР»Сѓ СЃРёРјРІРѕР»РѕРІ
 void SortCounter(char_info* counter, int qnt)
 {
 	for (int i = 1; i <= qnt - 1; i++)
@@ -167,7 +167,7 @@ int main()
 	printf("size of *c = %d\n", sizeof(*c));
 	return 0;
 	printf("Enter string (256 symbol maximum) and press ENTER:\n");
-	//ввод строки фиксированной длины: char s[256]; if (!fgets(s, 256, stdin)) printf("ќшибка ввода строки");
+	//РІРІРѕРґ СЃС‚СЂРѕРєРё С„РёРєСЃРёСЂРѕРІР°РЅРЅРѕР№ РґР»РёРЅС‹: char s[256]; if (!fgets(s, 256, stdin)) printf("СњС€РёР±РєР° РІРІРѕРґР° СЃС‚СЂРѕРєРё");
 	char* s = get_string();
 
 	int CharsCount;

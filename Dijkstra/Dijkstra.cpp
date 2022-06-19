@@ -91,7 +91,7 @@ PRICE_LIST InitPrices(const char* price_file_mame)
 	int q = 0;
 
 	if (f == NULL)
-		printf("Невозможно открыть файл %s", price_file_mame);
+		printf("РќРµРІРѕР·РјРѕР¶РЅРѕ РѕС‚РєСЂС‹С‚СЊ С„Р°Р№Р» %s", price_file_mame);
 
 	if (f != NULL)
 	{
@@ -265,10 +265,10 @@ void Dijkstra(int **GR, int qnt, int start)
 				distance[u] + GR[u][i] < distance[i])
 				distance[i] = distance[u] + GR[u][i];
 	}
-	/*cout << "Стоимость пути из начальной вершины до остальных:\t\n";
+	/*cout << "РЎС‚РѕРёРјРѕСЃС‚СЊ РїСѓС‚Рё РёР· РЅР°С‡Р°Р»СЊРЅРѕР№ РІРµСЂС€РёРЅС‹ РґРѕ РѕСЃС‚Р°Р»СЊРЅС‹С…:\t\n";
 	for (i = 0; i < V; i++) if (distance[i] != INT_MAX)
 		cout << m << " > " << i + 1 << " = " << distance[i] << endl;
-	else cout << m << " > " << i + 1 << " = " << "маршрут недоступен" << endl;*/
+	else cout << m << " > " << i + 1 << " = " << "РјР°СЂС€СЂСѓС‚ РЅРµРґРѕСЃС‚СѓРїРµРЅ" << endl;*/
 }
 
 union ttt {
@@ -285,7 +285,7 @@ int main()
 	return 0;
 
 	setlocale(LC_ALL, "Russian");
-	//generate_prices(); // генерирует прайсы случайным образом
+	//generate_prices(); // РіРµРЅРµСЂРёСЂСѓРµС‚ РїСЂР°Р№СЃС‹ СЃР»СѓС‡Р°Р№РЅС‹Рј РѕР±СЂР°Р·РѕРј
 
 	PRICE_LIST price_list = InitPrices("prices.txt");
 	if (price_list.qnt == 0)
@@ -294,11 +294,11 @@ int main()
 	//do {
 	DESTINATIONS destinations = InitDestinations(price_list);
 
-	printf("Откуда летим? Возможные пункты отправления (%d): \n\n", destinations.qnt);
+	printf("РћС‚РєСѓРґР° Р»РµС‚РёРј? Р’РѕР·РјРѕР¶РЅС‹Рµ РїСѓРЅРєС‚С‹ РѕС‚РїСЂР°РІР»РµРЅРёСЏ (%d): \n\n", destinations.qnt);
 	for (int i = 0; i < destinations.qnt; i++)
 		printf("   %d: %s\n", i + 1, destinations.destinations[i].name);
 	
-	printf("\nВведите номер пункта отправленя: ");
+	printf("\nР’РІРµРґРёС‚Рµ РЅРѕРјРµСЂ РїСѓРЅРєС‚Р° РѕС‚РїСЂР°РІР»РµРЅСЏ: ");
 	int start = ScanInt(destinations.qnt)-1;
 
 	destinations.destinations[start].cost = 0;
@@ -312,12 +312,12 @@ int main()
 		if ((i != start) && (destinations.destinations[i].cost != -1))
 		{
 			if (++c == 1)
-				printf("\n\nИз пункта \"%s\" Вы можете долететь до следующих пунктов\n(показана минимальная стоимость перелета):\n\n", destinations.destinations[start].name);
+				printf("\n\nРР· РїСѓРЅРєС‚Р° \"%s\" Р’С‹ РјРѕР¶РµС‚Рµ РґРѕР»РµС‚РµС‚СЊ РґРѕ СЃР»РµРґСѓСЋС‰РёС… РїСѓРЅРєС‚РѕРІ\n(РїРѕРєР°Р·Р°РЅР° РјРёРЅРёРјР°Р»СЊРЅР°СЏ СЃС‚РѕРёРјРѕСЃС‚СЊ РїРµСЂРµР»РµС‚Р°):\n\n", destinations.destinations[start].name);
 
-			printf("   %s: Стоимость - %d руб.", destinations.destinations[i].name, destinations.destinations[i].cost);
+			printf("   %s: РЎС‚РѕРёРјРѕСЃС‚СЊ - %d СЂСѓР±.", destinations.destinations[i].name, destinations.destinations[i].cost);
 			if (destinations.destinations[i].transfers.qnt > 1)
 			{
-				printf(" Пересадки (%d): ", destinations.destinations[i].transfers.qnt - 1);
+				printf(" РџРµСЂРµСЃР°РґРєРё (%d): ", destinations.destinations[i].transfers.qnt - 1);
 				for (int j = 0; j < destinations.destinations[i].transfers.qnt - 1; j++)
 				{
 					printf(destinations.destinations[i].transfers.points[j]);
@@ -326,24 +326,24 @@ int main()
 				}
 			}
 			else
-				printf(" Прямой");
+				printf(" РџСЂСЏРјРѕР№");
 
 			printf("\n");
 		}
 
 	if (c == 0)
-		printf("\n\nК сожалению, маршруты из указанной точки не найдены\n");
+		printf("\n\nРљ СЃРѕР¶Р°Р»РµРЅРёСЋ, РјР°СЂС€СЂСѓС‚С‹ РёР· СѓРєР°Р·Р°РЅРЅРѕР№ С‚РѕС‡РєРё РЅРµ РЅР°Р№РґРµРЅС‹\n");
 
-	printf("\nРассчитано на основе имеющегося прайса:\n\n");
+	printf("\nР Р°СЃСЃС‡РёС‚Р°РЅРѕ РЅР° РѕСЃРЅРѕРІРµ РёРјРµСЋС‰РµРіРѕСЃСЏ РїСЂР°Р№СЃР°:\n\n");
 	for (int i = 0; i < price_list.qnt; i++)
-		printf(" %s - %s: %d руб.\n", price_list.routes[i].start, price_list.routes[i].finish, price_list.routes[i].price);
+		printf(" %s - %s: %d СЂСѓР±.\n", price_list.routes[i].start, price_list.routes[i].finish, price_list.routes[i].price);
 
-	printf("\nНaжмите любую клавишу для выхода");
+	printf("\nРќaР¶РјРёС‚Рµ Р»СЋР±СѓСЋ РєР»Р°РІРёС€Сѓ РґР»СЏ РІС‹С…РѕРґР°");
 	_getch();
 
 	free(price_list.routes);
 	free(destinations.destinations);
 	
-	//printf("Нажмите \"y\" для продожения или любую клавишу дя выхода) ?");
+	//printf("РќР°Р¶РјРёС‚Рµ \"y\" РґР»СЏ РїСЂРѕРґРѕР¶РµРЅРёСЏ РёР»Рё Р»СЋР±СѓСЋ РєР»Р°РІРёС€Сѓ РґСЏ РІС‹С…РѕРґР°) ?");
 	//} while (_getche() == 'y');
 }
