@@ -1,6 +1,4 @@
 #define _CRT_SECURE_NO_WARNINGS
-// ApachLogsAnalyzer.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
 
 #include <iostream>
 #include <stdio.h>
@@ -9,8 +7,6 @@
 
 typedef char url[2048];
 typedef char ip[16];
-
-typedef char city[50];
 
 union responce_code
 {
@@ -30,8 +26,7 @@ struct access_log_rec {
 	ip client_ip; // IP - адрес клиента
 	char ident[100]; // «идентификатор» на клиенте, который используется для идентификации
 	char user[100]; // Идентификатор пользователя клиента, если использовалась HTTP - аутентификация    
-	struct tm request_time; // Отметка времени записи в журнале.
-	//char request[255]; // Строка запроса от клиента
+	struct tm request_time; // Отметка времени записи в журнале.	
 	struct {
 		char method[5];
 		url address;
@@ -188,62 +183,9 @@ int lcmp(const void* pa, const void* pb) {
 		return strcmp(b.request.address, a.request.address);
 }
 
-typedef enum direction{
-	up, down, left, right
-} hhh;
-
-void fff(hhh dir)
-{
-	switch (dir)
-	{
-		case left: printf("налево"); break;
-		case right: printf("направо"); break;
-		case up: printf("наверх"); break;
-		case down: printf("вниз"); break;
-	}
-}
-
 int main()
 {
 	setlocale(LC_ALL, "Russian");
-	enum {aaa,bbb,ccc,ddd};
-	printf("%d\n\n", ccc);
-
-	direction x = left;
-	fff(x);
-	return 0;
-
-	int ary[3][5] = {
-		{ 1, 2, 3, 4, 5 },
-		{ 2, 4, 6, 8, 10 },
-		{ 3, 6, 9, 12, 15 }
-	};
-	
-	int ic = 2, jc = 3, kc = 4;
-	int*** aa = (int***)malloc(ic * sizeof(int**));
-	for (int i = 0; i < ic; i++)
-	{
-		aa[i] = (int**)malloc(jc * sizeof(int*));
-		for (int j = 0; j < jc; j++)
-		{
-			aa[i][j] = (int*)malloc(kc * sizeof(int));
-			for (int k = 0; k < kc; k++)
-			{
-				aa[i][j][k] = (i+1)*(j+1)*(k+1);
-			}
-		}
-	}
-
-	for (int i = 0; i < ic; i++)
-	{
-		for (int j = 0; j < jc; j++)
-		{
-			for (int k = 0; k < kc; k++)
-			printf("%d\n", aa[i][j][k]);
-		}
-	}
-
-	return 0;
 
 	int l_qnt = 0;
 	access_log_rec* logs = read_logs(&l_qnt);
@@ -251,16 +193,14 @@ int main()
 	int c = 0;
 	do
 	{
-		printf("Выберите отчет (1. Ошибки 4хх  2. Ошибки 5хх  3. Все ошибки): ");
+		printf("Выберите отчет (1 - Ошибки 4хх;  2 - Ошибки 5хх;  3 - Все ошибки; Другая клавиша - выход): ");
 		c = _getche() - 48;
 		if (c >= 1 and c <= 3)
 		{
 			int err_qnt;
 
 			access_log_rec* errors = get_errors(logs, l_qnt, (c == 1 ? '4' : (c == 2 ? '5' : '0')), &err_qnt);
-			int ia[10] = { 1,2,3,4,5,6,7,8,9,0 };
 			qsort(errors, err_qnt, sizeof(access_log_rec), lcmp);
-			//qsort(ia, err_qnt, sizeof(int), cmp);
 			print_errors(errors, err_qnt);
 			free(errors);
 		}

@@ -141,6 +141,9 @@
   <ItemGroup>
     <ClCompile Include="ApachLogsAnalyzer.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="logs\access.2021.04.01.log" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
