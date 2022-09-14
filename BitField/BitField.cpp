@@ -57,7 +57,7 @@ unsigned char get_byte()
     int i;
     do
     {
-        printf("Введите число от 0 до 255: ");
+        printf("Введите лчисло от 0 до 255: ");
     } while ((scanf("%i", &i) < 1) || (i < 0) || (i > 255));
     
     return i;
