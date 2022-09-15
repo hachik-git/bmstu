@@ -1,0 +1,77 @@
+п»ї@page
+@model IndexModel
+@{
+    string s1 = (string?)ViewData["s1"] ?? "";
+    string s2 = (string?)ViewData["s2"] ?? "";
+    int l1 = s1.Length;
+    int l2 = s2.Length;
+    int[,] m = (int[,]?)ViewData["matrix"] ?? new int[0,0];
+}
+
+<div class="tsext-center">    
+    <form method="get">
+        <input name="s1" value="@s1" />
+        <input name="s2" value="@s2" />
+        <input type="submit" />
+    </form>
+    <div style="display:flС‹ex; margin-top:20px; margin-bottom:20px; ">
+        <table id="matrix">    
+            <tr>
+                <td>&nbsp;</td>
+                <td>в€…</td>
+                @for (int i = 0; i < l2; i++)
+                {
+                    <td>@s2[i]</td>
+                }
+            </tr>
+
+            @{
+                for (int i = 0; i <= l1; i++)
+                {
+                <tr>
+                    <td>@(i == 0 ? "в€…" : s1[i-1])</td>
+                    @for (int j = 0; j <= l2; j++)
+                    {
+                        <td>@m[i, j]</td>
+                    }
+                </tr>
+                }
+            }
+        </table>
+        <div>
+            <h2>Р’С‹С‡РёСЃР»РµРЅРЅРѕРµ СЂР°СЃСЃС‚РѕСЏРЅРёРµ:</h2>
+            <div>РњР°С‚СЂРёС†Р°: @ViewData["ldm"]</div>
+            <div>Р РµРєСѓСЂСЃРёСЏ: @ViewData["ldr"]</div>
+            <div>Р РµРєСѓСЂСЃРёСЏ СЃ РєРµС€РµРј: @ViewData["ldrc"]</div>
+            <div>Р”РѕРјРµСЂР°Сѓ: @ViewData["lddl"]</div>            
+            <div>РџСѓС‚СЊ @s1 в†’ @s2: @ViewData["path"]</div>
+            <div>
+                <h5>Р’СЂРµРјСЏ РІС‹РїРѕР»РЅРµРЅРёСЏ (10<sup>-9</sup>c)</h5>
+                @{
+                    var b = ViewData["benchmark1"] as TimeSpan[];
+                    if (b != null)
+                    {
+                        for (int i = 0; i < b.Length; i++)
+                        {
+                            <div>@((CalcMethod)i): @b[i].Ticks</div>
+                        }
+                    }
+                }
+            </div>
+        </div>        
+    </div>
+    <div>
+        <div id="chart_1"></div>
+        <div id="chart_2"></div>
+    </div>
+</div>
+<script>
+    /*var benchmark1 = [
+        ['Р’С‹Р·РѕРІС‹', 'РњР°С‚СЂРёС†Р°', 'Р РµРєСѓСЂСЃРёСЏ', 'Р РµРєСѓСЂСЃРёСЏ СЃ РєРµС€РµРј'],
+        @ViewData["benchmark1"]
+    ]*/
+    var benchmark2 = [
+        ['Р’С‹Р·РѕРІС‹', 'РњР°С‚СЂРёС†Р°', 'Р РµРєСѓСЂСЃРёСЏ', 'Р РµРєСѓСЂСЃРёСЏ СЃ РєРµС€РµРј'],
+        @ViewData["benchmark2"]
+    ]
+</script>

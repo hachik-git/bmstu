@@ -1,0 +1,40 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+}
+
+#matrix {margin-right:20px;}
+#matrix td {
+    border: 1px solid #808080;
+    width: 25px;
+}
+
+#matrix tr:last-of-type td:last-of-type {
+    font-weight:bold;
+    color:red;
+    background:#b6ff00;
+}
+
+#matrix tr td:first-child {
+    color: white;
+    background: #2c375f;
+}
+
+#matrix tr:first-child td {
+    color: white;
+    background: #2c375f;
+}
