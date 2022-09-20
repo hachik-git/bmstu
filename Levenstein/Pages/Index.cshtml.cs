@@ -36,7 +36,7 @@ namespace EditDistance.Pages
             
             System.Globalization.CultureInfo culture = new System.Globalization.CultureInfo("en-US");
             
-            int mc = 12;
+            int mc = 9;
             var b = new (string, TimeSpan, TimeSpan, TimeSpan)[mc*2];
             string w1, w2;
             Levenstein lev;
