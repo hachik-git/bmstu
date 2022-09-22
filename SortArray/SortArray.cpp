@@ -7,35 +7,51 @@
 #include <iostream>
 #include <cstdio>
 
-void iswap(int* a, int* b)
+void iswap(int &a, int &b)
 {
-    int tmp = *a;    
-    *a = *b;
-    *b = tmp;
+    int tmp = a;
+    a = b;
+    b = tmp;
 }
 
-void isort(int* a, int qnt, int desc = 0)
+void printArray(int* a, int n)
 {
-    for (int i = 1; i < qnt; i++)
-        for (int j = i; j > 0; j--)
-            if ((!desc && a[j] < a[j - 1]) || (desc && a[j] > a[j - 1]))
-                iswap(&a[j], &a[j - 1]);
+    for (int i = 0; i < n; i++)
+        printf("  %d - %d\n", i, a[i]);
+
+    printf("\n");
 }
 
-void bubbleSort(int* l, int* r) {
-    int sz = r - l;
-    if (sz <= 1) return;
-    bool b = true;
-    while (b) {
-        b = false;
-        for (int* i = l; i + 1 < r; i++) {
-            if (*i > *(i + 1)) {
-                std::swap(*i, *(i + 1));
-                b = true;
+void initArray(int* a, int n)
+{
+    srand(42);//srand(time(NULL));
+
+    for (int i = 0; i < n; i++)
+        a[i] = rand();
+}
+
+void bubbleSort(int* a, int qnt)
+{
+    bool flag = 1;
+    
+    while (flag)
+    {
+        flag = false;
+        for (int i = 0; i < qnt - 1; i++)
+            if (a[i] > a[i + 1])
+            {
+                iswap(a[i], a[i + 1]);
+                flag = true;
             }
-        }
-        r--;
     }
+}
+
+void completeSort(int* a, int qnt)
+{
+    for (int i = 0; i < qnt - 1; i++)
+        for (int j = i; j < qnt; j++)
+            if (a[j] < a[i])
+                iswap(a[i], a[j]);
 }
 
 void shakerSort(int* l, int* r) {    
@@ -70,27 +86,28 @@ int main(void)
     int ia[10];
     int al = 10;
 
-    srand(42);//srand(time(NULL));
+    initArray(&ia[0], 10);
     
-    for (int i = 0; i < al; i++)
-        ia[i] = rand();
-
     printf("Массив для сортировки:\n");
-    for (int i = 0; i < al; i++)
-        printf("  %d - %d\n", i, ia[i]);
-    
-    printf("\n");
+    printArray(&ia[0], al);
 
-    bubbleSort(&ia[0], &ia[10]);
+    bubbleSort(&ia[0], al);
+
     printf("Отсортирован пузырьком:\n");
     for (int i = 0; i < al; i++)
         printf("%d - %d\n", i, ia[i]);
 
-    srand(42);
+    initArray(&ia[0], 10);
+    completeSort(&ia[0], al);
 
+    printf("Отсортирован перебором:\n");
     for (int i = 0; i < al; i++)
-        ia[i] = rand();
-    printf("\n"); 
+        printf("%d - %d\n", i, ia[i]);
+
+    return 0;
+
+    initArray(&ia[0], 10);
+
     shakerSort(&ia[0], &ia[10]);
     printf("Отсортирован шейкером:\n");
     for (int i = 0; i < al; i++)
