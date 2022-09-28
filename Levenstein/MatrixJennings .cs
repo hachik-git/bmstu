@@ -1,6 +1,8 @@
-п»їnamespace Algorithm.Matrix;
+п»їusing System.Data.Common;
 
-public class MatrixJennings
+namespace Algorithm.Matrix;
+
+public class jMatrix
 {
     public int[] Elements { get; }
     public int[] Counter { get; }
@@ -9,10 +11,12 @@ public class MatrixJennings
         get { return Elements[Counter[row] - row + col - 1]; }
         set { Elements[Counter[row] - row + col - 1] = value; }
     }
-    public MatrixJennings(Matrix M)
+    public jMatrix(Matrix M)
     {
         if (M.RowCount != M.ColCount)
-            throw new ArgumentException("Jennings compressed matrix can be used ony for square matrix");
+            throw new ArgumentException("Jennings compressed matrix can be used only for square matrix");
+        if (!M.IsSymmetric)
+            throw new ArgumentException("Jennings compressed matrix can be used only for symmetric matrix");
 
         Counter = new int[M.RowCount];
         var EList = new List<int>();
@@ -35,12 +39,12 @@ public class MatrixJennings
         Elements = EList.ToArray();
     }
 
-    public static explicit operator MatrixJennings(Matrix matrix)
+    public static explicit operator jMatrix(Matrix matrix)
     {
-        return new MatrixJennings(matrix);
+        return new jMatrix(matrix);
     }
 
-    public static explicit operator Matrix(MatrixJennings mj)
+    public static explicit operator Matrix(jMatrix mj)
     {
         var m = new Matrix(mj.Counter.Length, mj.Counter.Length);
             
@@ -51,5 +55,16 @@ public class MatrixJennings
                 m[i, i-j] = m[i - j, i] = mj.Elements[mj.Counter[i] - j - 1];
 
         return m;
+    }
+
+    public static jMatrix operator +(jMatrix a, jMatrix b)
+    {
+        if (a?.Counter.Length != b.Counter.Length)
+            throw new ArgumentException("Can't sum matrix with different dimentions");
+        
+        var nc = new int[a.Counter.Length];
+        var nl = new List<int>();
+        
+        return new jMatrix(new Matrix(1,1));
     }
 }

@@ -21,7 +21,7 @@ namespace Algorithm.Matrix
             Algorithm = Matrix.MulAlg = (MultiplyAlgorithm)algorithm;
             C = this.A * this.B;
 
-            var J = (MatrixJennings)this.A;
+            var J = (jMatrix)this.A;
 
             int ms = sizeof(int) * this.A.RowCount * this.A.ColCount;
             int js = sizeof(int) * J.Counter.Length + sizeof(int) * J.Elements.Length;

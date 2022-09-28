@@ -30,6 +30,22 @@ public class Matrix
     }
     public int RowCount { get; private set; }
     public int ColCount { get; private set; }
+
+    public bool IsSymmetric
+    {
+        get
+        {
+            if (RowCount != ColCount)
+                return false;
+
+            for (int i = 0; i < RowCount; i++)
+                for (int j = 0; j < ColCount; j++)
+                    if (Data[i, j] != Data[j, i])
+                        return false;
+            
+            return true;
+        }
+    }
     public Matrix(int[,] a)
     {
         (RowCount, ColCount) = (a.GetLength(0), a.GetLength(0) == 0 ? 0 : a.Length / a.GetLength(0));
