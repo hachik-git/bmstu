@@ -6,7 +6,9 @@
     <title>@ViewData["Title"] - Levenstein</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/Levenstein.styles.css" asp-append-version="true" />
+    <!--link rel="stylesheet" href="~/Levenstein.styles.css" asp-append-version="true" /-->
+    <link rel="stylesheet" href="~/css/matrix.css" asp-append-version="true" />
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
 </head>
 <body>
     <!--header>
@@ -31,7 +33,7 @@
         </nav>
     </header-->
     <header>
-        <h1 style="text-align:center;">Р РµРґР°РєС†РёРѕРЅРЅРѕРµ СЂР°СЃСЃС‚РѕСЏРЅРёРµ (Р›РµРІРµРЅС€С‚РµР№РЅР°)</h1>
+        
     </header>
 
     <div class="container">
@@ -50,7 +52,6 @@
 
     @await RenderSectionAsync("Scripts", required: false)
     
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://www.gstatic.com/charts/loader.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>    

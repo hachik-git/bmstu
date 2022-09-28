@@ -1,0 +1,98 @@
+п»ї@page
+@using Algorithm.Matrix
+@model Algorithm.Matrix.MatrixModel
+@{
+    (int m, int n, int q) = (Model.m, Model.n, Model.q);
+    (Matrix A, Matrix B, Matrix C) = (Model.A, Model.B, Model.C);
+    /*var A = new Matrix(new int[,] { { 1, 2, 3 }, { 4, 5, 6 } });            
+            var B = new Matrix(3, 2);
+            
+            for (int i = 0; i < 3; i++)
+                for (int j = 0; j < 2; j++)
+                    B[i,j] = (i+1) * (j+1);
+
+            A = Matrix.GenMatrix(1500, 1000);
+            B = Matrix.GenMatrix(1000, 1500);
+            
+            TimeMeter.TimeMeter m = new TimeMeter.TimeMeter();            
+            MessageBox.Show(m.Measure(() => { var C = A * B; }, 20).ToString());
+            Matrix.MulAlg = MultiplyAlgorithm.Vinograd;
+            MessageBox.Show(m.Measure(() => { var C = A * B; }, 20).ToString());*/
+}
+<h1 style="text-align:center;">РЈРјРЅРѕР¶РµРЅРёРµ РјР°С‚СЂРёС†</h1>
+<form>
+M<input name="m" value="@m" />
+N<input name="n" value="@n" />
+Q<input name="q" value="@q" />
+РђР»РіРѕСЂРёС‚Рј:
+<select name="algorithm">
+    <option value="0">РўСЂРѕР№РЅРѕР№ С†РёРєР»</option>
+    <option value="1" selected="@(Model.Algorithm == MultiplyAlgorithm.Vinograd)">Р’РёРЅРѕРіСЂР°Рґ</option>        
+    </select>
+    <input type="submit" />
+    <div id="calculator">
+        <div>
+            <table>
+                @{
+                for (int i = 0; i < m; i++)
+                {
+                    <tr>
+                    @{
+                    for (int j = 0; j < n; j++)
+                    {
+                        <td><input name="A" value="@(A.ElementAtOrNull(n*i+j))"/></td>
+                    }
+                    }
+                    </tr>
+                }
+                }
+            </table>
+        </div>
+        <div class="operator">
+            X
+        </div>
+        <div>
+            <table>
+                @{
+                for (int i = 0; i < n; i++)
+                {
+                    <tr>
+                    @{
+                    for (int j = 0; j < q; j++)
+                    {
+                        <td><input name="B" value="@(B.ElementAtOrNull(q*i+j))"/></td>
+                    }
+                    }
+                    </tr>
+                }
+                }
+            </table>
+        </div>
+        <div class="operator">
+            =
+        </div>
+        <div>
+            <table id="mul_result">
+            @{
+            for (int i = 0; i < m; i++)
+            {
+                <tr>
+                @{
+                for (int j = 0; j < q; j++)
+                {
+                    <td><input readonly value="@(C.ElementAtOrNull(q*i+j))" /></td>
+                }
+                }
+                </tr>
+            }
+            }
+            </table>
+        </div>
+    </div>
+
+    <div id="perfomance">
+        <h2>Perfomance test</h2>
+        <input id="perfomance_qnt" />
+    </div>
+
+    </form>

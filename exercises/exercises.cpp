@@ -10,10 +10,10 @@ using namespace std;
 #define d(i,j) d[(i) * (m+1) + (j)]*/
 
 
-int* vvod_massiva(char name, int &n);
+int* vvod_massiva(char name, int& n);
 void print_massiv(int* a, int n, char name);
 float avg(int* a, int qnt);
-int* a_cross(int* a, int* b, int n, int m, int &res_length);
+int* a_cross(int* a, int* b, int n, int m, int& res_length);
 int* a_union(int* a, int* b, int n, int m);
 int* a_distinct(int* a, int n, int& res_length);
 int* a_minus(int* a, int* b, int n, int m, int& res_length);
@@ -33,7 +33,7 @@ int main()
 
     a = vvod_massiva('A', n);
     b = vvod_massiva('B', m);
-    
+
     print_massiv(a, n, 'A');
     print_massiv(b, m, 'B');
 
@@ -47,7 +47,7 @@ int main()
 
     int* u = a_union(a, b, n, m);
     cout << "\nA union B: ";
-    print_massiv(u, m+n, 'U');
+    print_massiv(u, m + n, 'U');
 
     int d_len;
     int* d = a_distinct(a, n, d_len);
@@ -100,7 +100,7 @@ int main()
         cout << m_scaler[i] << " "; */
 }
 
-int* vvod_massiva(char name, int &n)
+int* vvod_massiva(char name, int& n)
 {
     cout << "Enter array " << name << " length : ";
     cin >> n;
@@ -168,7 +168,7 @@ float avg(int* a, int qnt)
     return res / qnt;
 }
 
-int getIndex(int *a, int elem, int qnt)
+int getIndex(int* a, int elem, int qnt)
 {
     for (int i = 0; i < qnt; i++)
         if (a[i] == elem)
@@ -185,9 +185,9 @@ int* a_cross(int* a, int* b, int n, int m, int& res_length)
         if ((getIndex(b, a[i], m) != -1) && (getIndex(tmp, a[i], res_length) == -1))
             tmp[res_length++] = a[i];
 
-    int * res = new int[res_length];
+    int* res = new int[res_length];
     std::copy_n(tmp, res_length, res);
-    
+
     delete[] tmp;
 
     return res;
@@ -195,7 +195,7 @@ int* a_cross(int* a, int* b, int n, int m, int& res_length)
 
 int* a_union(int* a, int* b, int n, int m)
 {
-    int *res = new int[n + m];
+    int* res = new int[n + m];
 
     std::copy_n(a, n, res);
     std::copy_n(b, m, &res[n]);
@@ -203,7 +203,7 @@ int* a_union(int* a, int* b, int n, int m)
     return res;
 }
 
-int* a_distinct(int* a, int n, int &res_length)
+int* a_distinct(int* a, int n, int& res_length)
 {
     int* tmp = new int[n];
     res_length = 0;
@@ -214,8 +214,8 @@ int* a_distinct(int* a, int n, int &res_length)
 
     int* res = new int[res_length];
     std::copy_n(tmp, res_length, res);
-    
-    delete [] tmp;
+
+    delete[] tmp;
 
     return res;
 }
@@ -240,7 +240,7 @@ int* a_minus(int* a, int* b, int n, int m, int& res_length)
 int* a_difference(int* a, int* b, int n, int m, int& res_length, bool distinct)
 {
     int l1 = 0, l2 = 0, rl = 0;
-    int *u = a_union(a_minus(a, b, n, m, l1), a_minus(b, a, m, n, l2), l1, l2);
+    int* u = a_union(a_minus(a, b, n, m, l1), a_minus(b, a, m, n, l2), l1, l2);
     if (!distinct)
     {
         res_length = l1 + l2;

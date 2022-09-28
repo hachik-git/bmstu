@@ -1,15 +1,11 @@
-п»їusing Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using System.Diagnostics;
-using System.Text.Json;
-using System.Text.Json.Serialization;
+п»їusing Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace EditDistance.Pages
+namespace Algorithm.Levenstein
 {
-    public class IndexModel : PageModel
+    public class LevensteinModel : PageModel
     {
-        private readonly ILogger<IndexModel> _logger;
-        public IndexModel(ILogger<IndexModel> logger)
+        private readonly ILogger<LevensteinModel> _logger;
+        public LevensteinModel(ILogger<LevensteinModel> logger)
         {
             _logger = logger;
         }
@@ -29,7 +25,7 @@ namespace EditDistance.Pages
 
             var benchmark1 = new TimeSpan[4];
             
-            foreach (var method in CalcMethod.GetValues<EditDistance.CalcMethod>())
+            foreach (var method in CalcMethod.GetValues<CalcMethod>())
                 benchmark1[(int)method] = L.MeasureTime(method);
 
             ViewData["benchmark1"] = benchmark1;

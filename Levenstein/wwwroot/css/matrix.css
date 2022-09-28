@@ -1,0 +1,34 @@
+п»їbody {
+}
+
+#calculator {
+    display: flex;
+    margin-top:20px;
+    gap: 10px;
+}
+
+#calculator > div {
+    border-left: 1px solid black;
+    border-right: 1px solid black;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+#calculator > div.operator {
+    border:none;
+    vertical-align:middle;
+}
+
+#calculator input {
+    width: 60px;
+    text-align: right;
+    padding: 0px 5px;
+}
+
+#calculator input[readonly] {
+    background:#f2f2f2;
+}
+
+#perfomance td{
+    border:1px solid red;
+}

@@ -13,23 +13,7 @@ namespace Rasterisation
         DDA,
         DDA2,
     }
-
-    public class TimeMeter
-    {
-        Stopwatch sw = new Stopwatch();
-
-        public long Measure(Delegate method, int MeasuresQnt, params object[] args)
-        {
-            sw.Start();
-            
-            while (MeasuresQnt-- > 0)
-                method.DynamicInvoke(args);
-
-            sw.Stop();
-
-            return sw.Elapsed.Ticks;
-        }
-    }
+    
     public class Rasterisator
     {
         Graphics Graphics { get; set; } 

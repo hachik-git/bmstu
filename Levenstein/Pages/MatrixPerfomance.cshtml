@@ -1,0 +1,24 @@
+п»ї@page
+@using Algorithm.Matrix
+@model Algorithm.Matrix.MatrixPerfomanceModel
+
+<h1 style="text-align:center;">РўРµСЃС‚ РїСЂРѕРёР·РІРѕРґРёС‚РµР»СЊРЅРѕСЃС‚Рё</h1>
+<table id="perfomance">
+    <tr>
+    @{
+        for (int i = 0; i < 5; i++)
+        {
+            <td>@(Model.meassures[0,i])</td>
+        }
+    }
+    </tr>
+    <tr>
+    @{
+        for (int i = 0; i < 5; i++)
+        {
+            <td>@(Model.meassures[1, i])</td>
+        }
+    }
+    </tr>
+}
+</table>

@@ -1,4 +1,4 @@
-п»їnamespace EditDistance;
+п»їnamespace Algorithm.Levenstein;
 
 using System;
 using System.Diagnostics;

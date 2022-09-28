@@ -1,3 +1,5 @@
+using MatrixMult;
+using TimeMeter;
 namespace ExercisesAlg
 {
     public partial class Form1 : Form
@@ -6,16 +8,20 @@ namespace ExercisesAlg
         {
             InitializeComponent();
 
-            (int M, int N, int Q) = (2, 3, 4);
-            var A = new int[M, N];
-            var B = new int[N, Q];
+            var A = new Matrix(new int[,] { { 1, 2, 3 }, { 4, 5, 6 } });            
+            var B = new Matrix(3, 2);
+            
+            for (int i = 0; i < 3; i++)
+                for (int j = 0; j < 2; j++)
+                    B[i,j] = (i+1) * (j+1);
 
-            for (int i = 0; i < M; i++)
-                for (int j = 0; j < Q; j++)
-                    for (int k = 0; k < Q; k++)
-                    {
-
-                    }    
+            //A = Matrix.GenMatrix(1500, 1000);
+            //B = Matrix.GenMatrix(1000, 1500);
+            
+            TimeMeter.TimeMeter m = new TimeMeter.TimeMeter();            
+            MessageBox.Show(m.Measure(() => { var C = A * B; }, 20).ToString());
+            Matrix.MulAlg = MultiplyAlgorithm.Vinograd;
+            MessageBox.Show(m.Measure(() => { var C = A * B; }, 20).ToString());
         }
     }
 }

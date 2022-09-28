@@ -1,5 +1,5 @@
 п»ї@page
-@model IndexModel
+@model Algorithm.Levenstein.LevensteinModel
 @{
     string s1 = (string?)ViewData["s1"] ?? "";
     string s2 = (string?)ViewData["s2"] ?? "";
@@ -14,7 +14,7 @@
         <input name="s2" value="@s2" />
         <input type="submit" />
     </form>
-    <div style="display:flС‹ex; margin-top:20px; margin-bottom:20px; ">
+    <div style="display:flex; margin-top:20px; margin-bottom:20px; ">
         <table id="matrix">    
             <tr>
                 <td>&nbsp;</td>
@@ -53,7 +53,7 @@
                     {
                         for (int i = 0; i < b.Length; i++)
                         {
-                            <div>@((CalcMethod)i): @b[i].Ticks</div>
+                            <div>@((Algorithm.Levenstein.CalcMethod)i): @b[i].Ticks</div>
                         }
                     }
                 }

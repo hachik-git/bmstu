@@ -1,7 +1,7 @@
-namespace EditDistance.Tests;
+namespace Algorithm.Levenstein.Tests;
 
 [TestClass]
-public class DistanceTest
+public class LevensteinTest
 {
     [TestMethod]
     public void Matrix_пусто_пусто_0()
