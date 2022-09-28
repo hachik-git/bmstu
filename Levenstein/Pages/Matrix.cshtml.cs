@@ -27,8 +27,9 @@ namespace Algorithm.Matrix
             int js = sizeof(int) * J.Counter.Length + sizeof(int) * J.Elements.Length;
 
             var mt = (Matrix)J;
-            int t = J[3, 4];
-            J[1, 2] = 10;
+
+            var S = this.A + this.A;
+            var S1 = J + J;
         }
     }
 }

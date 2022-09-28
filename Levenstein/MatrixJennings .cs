@@ -39,6 +39,12 @@ public class jMatrix
         Elements = EList.ToArray();
     }
 
+    public jMatrix(int[] elements, int[] counter)
+    {
+        Elements = elements;
+        Counter = counter;
+    }
+
     public static explicit operator jMatrix(Matrix matrix)
     {
         return new jMatrix(matrix);
@@ -64,7 +70,17 @@ public class jMatrix
         
         var nc = new int[a.Counter.Length];
         var nl = new List<int>();
+
+        for (int i = 0; i < a.Counter.Length; i++)
+        {
+            /*Math.Max(
+            a.Counter[a.Counter.Length - 1],
+            b.Counter[b.Counter.Length - 1])*/
+
+            nl.Add(a.Elements.FirstOrDefault(i) + b.Elements.FirstOrDefault(i));
+            nc[i] = Math.Max(a.Counter[i], b.Counter[i]);
+        }
         
-        return new jMatrix(new Matrix(1,1));
+        return new jMatrix(nl.ToArray(), nc);
     }
 }

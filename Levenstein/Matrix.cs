@@ -148,7 +148,7 @@ public class Matrix
 
         for (int r = 0; r < A.RowCount; r++)
             for (int c = 0; c < A.ColCount; c++)
-                C[r, c] = C[r, c] + B[r, c];
+                C[r, c] = A[r, c] + B[r, c];
 
         return C;
     }
