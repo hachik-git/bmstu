@@ -1,9 +1,60 @@
 п»їbody {
 }
 
+*{
+  box-sizing:border-box;  
+}
+
+section{ margin-bottom:25px;}
+
+table > caption {
+    caption-side: top;
+    text-align:center;
+}
+
+.matrix  {    
+    /*border-left: 1px solid black;
+    border-right: 1px solid black;
+    margin-right: 10px;
+    border-radius: 10px;*/
+}
+
+.matrix table td{
+   font-family:monospace;
+   border:0px solid red;
+   width:40px;
+   text-align:center;
+   padding:0px 3px;
+}
+
+#multiply > div{display:flex;}
+#multiply > div > div{ padding: 0px 15px;}
+#multiply caption{height:70px;}
+
+#compression h4{margin-left:20px; margin-top:35px}
+#compression > div{display:flex; align-items:flex-start; justify-content: flex-start; margin-left:20px; border:0px solid red;}
+#compression > div > div{ padding: 0px 25px;}
+
+.caption{padding:8px 0px;}
+
+#addition > div{display:flex;}
+#addition > div > div{ padding: 0px 25px;}
+
+#matrix_init{display:flex;}
+#matrix_init > div {margin-right:25px;}
+#matrix_init input{width:45px; text-align:center}
+#matrix_init td{padding:2px;}
+
+#perfomance td, th{
+  border:1px solid #444;
+  font-family: monospace;
+  text-align:right;
+  padding:0px 10px;
+}
+
 #calculator {
     display: flex;
-    margin-top:20px;
+    margin-top: 20px;
     gap: 10px;
 }
 
@@ -29,6 +80,99 @@
     background:#f2f2f2;
 }
 
-#perfomance td{
-    border:1px solid red;
+#compress{
+  display:flex; 
+}
+
+#compress > div{
+  padding:10px;
+}
+
+#compress .matrix td{
+    width:30px; 
+    min-width:30px; 
+    height:30px; 
+    border:1px solid grey;
+    text-align:right;
+}
+
+#compress .jennings > div{
+  display:flex;
+  flex-wrap:wrap;  
+}
+
+
+.jennings > .elements{
+  display:flex;
+  align-items:flex-end;
+}
+
+.jennings > .elements > .name{
+  line-height :normal;
+}
+
+.jennings > .elements > div{
+  margin-bottom:7px;
+}
+
+.jennings > .elements div.i{
+  color:blue;
+  font-size:8px;
+  text-align:center;
+  line-height: 1em;
+}
+
+.jennings > .elements div.e{  
+  text-align:center;
+  line-height: 1em;
+  border:1px solid grey;
+  width:30px;
+}
+
+.jennings > .elements div.sep{
+  padding:0px 4px;
+  text-align:center;
+}
+
+.jennings > .elements div.sep:last-of-type{
+  display:none;
+}
+
+
+
+
+
+.jennings > .counter{
+  display:flex;
+}
+
+.jennings > .counter > div{
+  margin-bottom:7px;
+}
+
+.jennings > .counter div.i{
+  color:blue;
+  font-size:8px;
+  text-align:center;
+  line-height: 1em;
+}
+
+.jennings > .counter div.e{  
+  text-align:center;
+  line-height: 1em;
+  border:1px solid grey;
+  width:30px;
+}
+
+.jennings > .counter div.sep{
+  padding:0px 4px;
+  text-align:center;
+}
+
+.jennings > .counter div.sep:last-of-type{
+  display:none;
+}
+
+#perfomance div {
+  font-family: monospace;
 }

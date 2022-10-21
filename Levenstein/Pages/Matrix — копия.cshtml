@@ -1,0 +1,237 @@
+п»ї@page
+@using Algorithm.Matrix
+@using System.Diagnostics
+@model Algorithm.Matrix.MatrixModel
+@{
+    (int m, int n, int q) = (Model.m, Model.n, Model.q);
+    (Matrix A, Matrix B, Matrix C, Matrix S, Matrix MT) = (Model.A, Model.B, Model.C, Model.S, Model.MT);
+    Matrix JM = Model.JM;
+    var J = Model.J;
+    var SJ = Model.SJ;
+
+    var AAA = Matrix.GenMatrix(300, 200);
+    var BBB = Matrix.GenMatrix(200, 300);
+            
+    TimeMeter.TimeMeter tm = new TimeMeter.TimeMeter();            
+    long t1 = tm.Measure(() => { var CCC = AAA * BBB; }, 20);
+    Matrix.MulAlg = MultiplyAlgorithm.Vinograd;
+    long t2 = tm.Measure(() => { var DDD = AAA * BBB; }, 20);
+    Matrix.MulAlg = MultiplyAlgorithm.VinogradOptimized;
+    long t3 = tm.Measure(() => { var EEE = AAA * BBB; }, 20);
+}
+
+<h1 style="text-align:center;">РЈРјРЅРѕР¶РµРЅРёРµ РјР°С‚СЂРёС†</h1>
+<div id="perfomance">
+    <h2>Perfomance test</h2>
+    <input id="perfomance_qnt" />
+    <div>t1 = @t1</div>
+    <div>t2 = @t2</div>
+    <div>t3 = @t3</div>
+</div>
+<form>
+M<input name="m" value="@m" />
+N<input name="n" value="@n" />
+Q<input name="q" value="@q" />
+РђР»РіРѕСЂРёС‚Рј:
+<select name="algorithm">
+    <option value="0">РўСЂРѕР№РЅРѕР№ С†РёРєР»</option>
+    <option value="1" selected="@(Model.Algorithm == MultiplyAlgorithm.Vinograd)">Р’РёРЅРѕРіСЂР°Рґ</option>        
+    </select>
+    <input type="submit" />
+    <div id="calculator">
+        <div>
+            <table>
+                @{
+                for (int i = 0; i < m; i++)
+                {
+                                    <tr>
+                                    @{
+                    for (int j = 0; j < n; j++)
+                    {
+                                                        <td><input name="A" value="@(A.ElementAtOrNull(n*i+j))"/></td>
+                    }
+                                    }
+                                    </tr>
+                }
+                }
+            </table>
+        </div>
+        <div class="operator">
+            X
+        </div>
+        <div>
+            <table>
+                @{
+                for (int i = 0; i < n; i++)
+                {
+                                    <tr>
+                                    @{
+                    for (int j = 0; j < q; j++)
+                    {
+                                                        <td><input name="B" value="@(B.ElementAtOrNull(q*i+j))"/></td>
+                    }
+                                    }
+                                    </tr>
+                }
+                }
+            </table>
+        </div>
+        <div class="operator">
+            =
+        </div>
+        <div>
+            <table id="mul_result">
+            @{
+            for (int i = 0; i < m; i++)
+            {
+                                <tr>
+                                @{
+                for (int j = 0; j < q; j++)
+                {
+                                                    <td><input readonly value="@(C.ElementAtOrNull(q*i+j))" /></td>
+                }
+                                }
+                            </tr>
+                    }
+                }
+            </table>
+        </div>
+    </div>
+
+    <div id="perfomance">
+        <h2>Perfomance test</h2>
+        <input id="perfomance_qnt" />
+    </div>
+
+    @{
+        if (J?.Counter != null)
+        {
+            <div id="compress">
+                <div class="matrix initial">
+                    <table>
+                        @{
+                            for (int i = 0; i < A.RowCount; i++)
+                            {
+                                <tr>
+                                    @{
+                                        for (int j = 0; j < A.ColCount; j++)
+                                        {
+                                            <td>@(A.ElementAtOrNull(n * i + j))</td>
+                                        }
+                                    }
+                                </tr>
+                            }
+                        }
+                    </table>
+                </div>
+                <div class="jennings">
+                    <div class="elements">
+                        @for (int i = 0; i < J.Elements.Length; i++)
+                        {
+                            <div>
+                                <div class="i">@i</div>
+                                <div class="e">@(J.Elements[i])</div>
+                            </div>
+                            <div class="sep">,</div>
+                        }
+                    </div>
+                    <div class="counter">
+                        @for (int i = 0; i < J.Counter.Length; i++)
+                        {
+                            <div>
+                                <div class="i">@i</div>
+                                <div class="e">@(J.Counter[i])</div>
+                            </div>
+                            <div class="sep">,</div>
+                        }
+                    </div>
+                    <div>РљРѕРјРїСЂРµСЃСЃРёСЏ @(J.Compression * 100)%</div>
+                </div>
+                <div class="matrix restored">
+                    <table>
+                        @{
+                            for (int i = 0; i < JM.RowCount; i++)
+                            {
+                                <tr>
+                                    @{
+                                        for (int j = 0; j < JM.ColCount; j++)
+                                        {
+                                            <td>@(JM.ElementAtOrNull(n * i + j))</td>
+                                        }
+                                    }
+                                </tr>
+                            }
+                        }
+                    </table>
+                </div>
+            </div>
+        }
+    }
+
+    <div id="summ">
+        <div class="matrix initial">
+            <table>
+                @{if (S != null) {
+                for (int i = 0; i < S.RowCount; i++)
+                {
+                    <tr>
+                    @{
+                    for (int j = 0; j < S.ColCount; j++)
+                    {
+                        <td>@(S.ElementAtOrNull(n * i + j))</td>
+                    }
+                    }
+                    </tr>
+                }
+                }}}
+            </table>
+        </div>
+    </div>
+
+    @if (SJ != null) {
+    <div class="jennings">
+        <div class="elements">
+            @for (int i = 0; i < SJ.Elements.Length; i++)
+            {
+                <div>
+                    <div class="i">@i</div>
+                    <div class="e">@(SJ.Elements[i])</div>
+                </div>
+                <div class="sep">,</div>
+            }
+        </div>
+        <div class="counter">
+            @for (int i = 0; i < SJ.Counter.Length; i++)
+            {
+                <div>
+                    <div class="i">@i</div>
+                    <div class="e">@(SJ.Counter[i])</div>
+                </div>
+                <div class="sep">,</div>
+            }
+        </div>
+    </div>
+    }
+
+    <div class="matrix initial">
+        <table>
+            @{
+                if (MT != null)
+                {
+                    for (int i = 0; i < MT.RowCount; i++)
+                    {
+                        <tr>
+                            @{
+                                for (int j = 0; j < MT.ColCount; j++)
+                                {
+                                    <td>@(MT.ElementAtOrNull(n * i + j))</td>
+                                }
+                            }
+                        </tr>
+                    }
+                }
+            }}
+        </table>
+    </div>
+
+    </form>

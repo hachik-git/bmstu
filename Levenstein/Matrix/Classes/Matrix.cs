@@ -1,26 +1,28 @@
-п»їnamespace Algorithm.Matrix;
+п»їnamespace Matrices;
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 
 public enum MultiplyAlgorithm
 {
     TripleCycle,
     Vinograd,
+    VinogradOptimized,
 }
-public class Matrix
+
+public class Matrix : BaseMatrix, IMatrix
 {
+    private int rowCount = 0;
+
+    private int colCount = 0;
+
     public int[,] Data { get; }
+
     public static MultiplyAlgorithm MulAlg { get; set; } = MultiplyAlgorithm.TripleCycle;
-    public int this[int r, int c]
-    {
-        get { return Data[r, c]; }
-        set { Data[r, c] = value; }
-    }
+
+    public override int RowCount { get { return rowCount; } }
+
+    public override int ColCount { get { return colCount; } }
+
     public int? ElementAtOrNull(int index)
     {
         if (index < RowCount * ColCount)
@@ -28,50 +30,39 @@ public class Matrix
         else
             return null;
     }
-    public int RowCount { get; private set; }
-    public int ColCount { get; private set; }
-
-    public bool IsSymmetric
-    {
-        get
-        {
-            if (RowCount != ColCount)
-                return false;
-
-            for (int i = 0; i < RowCount; i++)
-                for (int j = 0; j < ColCount; j++)
-                    if (Data[i, j] != Data[j, i])
-                        return false;
-            
-            return true;
-        }
-    }
-    public Matrix(int[,] a)
-    {
-        (RowCount, ColCount) = (a.GetLength(0), a.GetLength(0) == 0 ? 0 : a.Length / a.GetLength(0));
-        Data = a;
-    }    
-    public Matrix(int RowCount, int ColCount, int[]? a = null) : this(new int[RowCount, ColCount])
-    {
-        if (a != null)
-        {
-            for (int r = 0, i = 0; r < RowCount && i < a.Length; r++)
-                for (int c = 0; c < ColCount && i < a.Length; c++, i++)
-                    Data[r, c] = a[i];
-        }
-    }
     
-    public static explicit operator int[,](Matrix matrix)
+    public override int this[int r, int c]
     {
-        var a = new int[matrix.RowCount, matrix.ColCount];
-        Array.Copy(matrix.Data, a, matrix.Data.Length);
+        get { return Data[r, c]; }
+        set { Data[r, c] = value; } 
+    }
+
+    public override int[,] ToArray()
+    {
+        var a = new int[RowCount, ColCount];
+        Array.Copy(Data, a, Data.Length);
         return a;
     }
 
-    public static explicit operator Matrix(int[,] array)
-    {
-        return new Matrix(array);
+    public Matrix(int[,] a)
+    {   
+        Data = a;
+        (rowCount, colCount) = (a.GetLength(0), a.GetLength(0) == 0 ? 0 : a.Length / a.GetLength(0));
     }
+
+    public Matrix(int RowCount, int ColCount) : this(new int[RowCount, ColCount])
+    {
+        ;
+    }
+
+    public Matrix(int RowCount, int ColCount, int[] A) : this(RowCount, ColCount)
+    {
+        for (int r = 0; r < RowCount; r++)
+            for (int c = 0; c < ColCount; c++)
+                if (A.Length > r * ColCount + c)
+                    this[r, c] = A[r*ColCount + c];
+    }
+
     public static Matrix GenMatrix(int m, int n)
     {
         var matrix = new Matrix(m, n);
@@ -83,6 +74,7 @@ public class Matrix
             
         return matrix;
     }
+
     public static Matrix operator *(Matrix A, Matrix B)
     {
         if (A.ColCount != B.RowCount)
@@ -100,26 +92,19 @@ public class Matrix
                         C[m, q] += A[m, n] * B[n, q];
                 }
         }
-        else
+        else if (MulAlg == MultiplyAlgorithm.Vinograd)
         {
 
-            int M = A.RowCount;
-            int N = A.ColCount;
-            int Q = B.ColCount;
-
-            var MulH = new int[M];
-            var MulV = new int[Q];
+            (int M, int N, int Q) = (A.RowCount, A.ColCount, B.ColCount);
+            (var MulH, var MulV) = (new int[M], new int[Q]);
 
             for (int i = 0; i < M; i++)
-            {
                 for (int k = 0; k < (N/ 2); k++)
-                    MulH[i] += A[i, 2*k] * A[i, 2*k+1];
-            }
+                    MulH[i] = MulH[i] + A[i, 2*k] * A[i, 2*k+1];
+
             for (int i = 0; i < Q; i++)
-            {
                 for (int k = 0; k < (N / 2); k++)
-                    MulV[i] += B[2*k, i] * B[2*k+1, i];
-            }
+                    MulV[i] = MulV[i] + B[2*k, i] * B[2*k+1, i];
 
             for (int i = 0; i < M; i++) 
                 for (int j = 0; j < Q; j++)
@@ -130,15 +115,43 @@ public class Matrix
                 }
 
             if (N % 2 != 0)
-            {
                 for (int i = 0; i < M; i++)
                     for (int j = 0; j < Q; j++)
-                        C[i, j] += A[i, N-1] * B[N-1, j];
-            }
+                        C[i, j] = C[i, j] + A[i, N-1] * B[N-1, j];
+        }
+        else if (MulAlg == MultiplyAlgorithm.VinogradOptimized)
+        {
+
+            (int M, int N, int Q) = (A.RowCount, A.ColCount, B.ColCount);
+            (var MulH, var MulV) = (new int[M], new int[Q]);
+
+            int d = (N / 2) * 2;
+            for (int i = 0; i < M; i++)
+                for (int k = 0; k < d; k += 2)
+                    MulH[i] -= A[i, k] * A[i, k + 1];
+
+            for (int i = 0; i < Q; i++)
+                for (int k = 0; k < d; k += 2)
+                    MulV[i] -= B[k, i] * B[k + 1, i];
+
+            for (int i = 0; i < M; i++)
+                for (int j = 0; j < Q; j++)
+                {
+                    int buf = 0;
+                    for (int k = 0; k < d; k += 2)
+                        buf += (A[i, k] + B[k + 1, j]) * (A[i, k + 1] + B[k, j]);
+                    C[i, j] = MulH[i] + MulV[j] + buf;
+                }
+
+            if (N % 2 != 0)
+                for (int i = 0; i < M; i++)
+                    for (int j = 0; j < Q; j++)
+                        C[i, j] += A[i, N - 1] * B[N - 1, j];
         }
 
         return C;
     }
+
     public static Matrix operator +(Matrix A, Matrix B)
     {
         if ((A.ColCount != B.ColCount) || (A.RowCount != B.RowCount))

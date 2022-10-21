@@ -1,7 +1,7 @@
-п»їusing Microsoft.AspNetCore.Mvc.RazorPages;
-using TimeMeter;
+п»їusing Matrices;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace Algorithm.Matrix
+namespace Algorithm.Matrices
 {
     public class MatrixPerfomanceModel : PageModel
     {

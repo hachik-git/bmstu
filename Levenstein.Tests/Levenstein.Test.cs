@@ -1,4 +1,4 @@
-namespace Algorithm.Levenstein.Tests;
+namespace LevensteinDistance.Tests;
 
 [TestClass]
 public class LevensteinTest

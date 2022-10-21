@@ -6,4 +6,20 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <Optimize>True</Optimize>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <Optimize>False</Optimize>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Pages\Matrix.cshtml вЂ” РєРѕРїРёСЏ.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="Pages\Matrix вЂ” РєРѕРїРёСЏ.cshtml" />
+  </ItemGroup>
+
 </Project>

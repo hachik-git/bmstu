@@ -1,98 +1,364 @@
-п»ї@page
-@using Algorithm.Matrix
-@model Algorithm.Matrix.MatrixModel
+@page
+@using Algorithm.Matrices
+@using System.Diagnostics
+@using Matrices;
+@model Algorithm.Matrices.MatrixModel
 @{
     (int m, int n, int q) = (Model.m, Model.n, Model.q);
-    (Matrix A, Matrix B, Matrix C) = (Model.A, Model.B, Model.C);
-    /*var A = new Matrix(new int[,] { { 1, 2, 3 }, { 4, 5, 6 } });            
-            var B = new Matrix(3, 2);
-            
-            for (int i = 0; i < 3; i++)
-                for (int j = 0; j < 2; j++)
-                    B[i,j] = (i+1) * (j+1);
-
-            A = Matrix.GenMatrix(1500, 1000);
-            B = Matrix.GenMatrix(1000, 1500);
-            
-            TimeMeter.TimeMeter m = new TimeMeter.TimeMeter();            
-            MessageBox.Show(m.Measure(() => { var C = A * B; }, 20).ToString());
-            Matrix.MulAlg = MultiplyAlgorithm.Vinograd;
-            MessageBox.Show(m.Measure(() => { var C = A * B; }, 20).ToString());*/
+    (Matrix A, Matrix B) = (Model.A, Model.B);
 }
-<h1 style="text-align:center;">РЈРјРЅРѕР¶РµРЅРёРµ РјР°С‚СЂРёС†</h1>
-<form>
-M<input name="m" value="@m" />
-N<input name="n" value="@n" />
-Q<input name="q" value="@q" />
-РђР»РіРѕСЂРёС‚Рј:
-<select name="algorithm">
-    <option value="0">РўСЂРѕР№РЅРѕР№ С†РёРєР»</option>
-    <option value="1" selected="@(Model.Algorithm == MultiplyAlgorithm.Vinograd)">Р’РёРЅРѕРіСЂР°Рґ</option>        
-    </select>
-    <input type="submit" />
-    <div id="calculator">
-        <div>
-            <table>
-                @{
-                for (int i = 0; i < m; i++)
-                {
-                    <tr>
-                    @{
-                    for (int j = 0; j < n; j++)
-                    {
-                        <td><input name="A" value="@(A.ElementAtOrNull(n*i+j))"/></td>
-                    }
-                    }
-                    </tr>
-                }
-                }
-            </table>
-        </div>
-        <div class="operator">
-            X
-        </div>
-        <div>
-            <table>
-                @{
-                for (int i = 0; i < n; i++)
-                {
-                    <tr>
-                    @{
-                    for (int j = 0; j < q; j++)
-                    {
-                        <td><input name="B" value="@(B.ElementAtOrNull(q*i+j))"/></td>
-                    }
-                    }
-                    </tr>
-                }
-                }
-            </table>
-        </div>
-        <div class="operator">
-            =
-        </div>
-        <div>
-            <table id="mul_result">
-            @{
-            for (int i = 0; i < m; i++)
-            {
-                <tr>
-                @{
-                for (int j = 0; j < q; j++)
-                {
-                    <td><input readonly value="@(C.ElementAtOrNull(q*i+j))" /></td>
-                }
-                }
-                </tr>
-            }
-            }
-            </table>
-        </div>
-    </div>
 
-    <div id="perfomance">
-        <h2>Perfomance test</h2>
-        <input id="perfomance_qnt" />
-    </div>
-
+<h1 style="text-align:center;">Операции с матрицами</h1>
+<section id="init">
+    <h2>Инициализация матриц</h2>
+    <form>
+        M: <input name="m" value="@m" />
+        N: <input name="n" value="@n" />
+        Q: <input name="q" value="@q" />
+        <input type="submit" />
+        <div id="matrix_init">
+            @foreach (var matrix in new Matrix[] { A, B }) {
+                <div class="matrix" id="matrix_@matrix.Name">
+                    <table>
+                        <caption>Матрица @matrix.Name</caption>
+                        @for (int i = 0; i < matrix.RowCount; i++) {
+                            <tr>
+                                @for (int j = 0; j < matrix.ColCount; j++) {
+                                    <td><input name="@matrix.Name" value="@(matrix.ElementAtOrNull(matrix.ColCount*i+j))" /></td>
+                                }
+                            </tr>
+                        }
+                    </table>
+                </div>
+            }
+        </div>
     </form>
+</section>
+
+<section id="multiply">
+    <h2>Умножение</h2>
+        <div>
+        @{
+            var muls = new List<Matrix>() { A, B };
+
+            foreach (MultiplyAlgorithm alg in Enum.GetValues(typeof(MultiplyAlgorithm)))
+            {
+                Matrix.MulAlg = alg;
+                muls.Add(A * B);
+                muls.Last().Name = "A * B, " + ((MultiplyAlgorithm)alg).ToString();
+            }
+
+            foreach (var matrix in muls) {
+                <div class="matrix" id="matrix_@matrix.Name">
+                    <table>
+                        <caption>@matrix.Name</caption>
+                        @for (int i = 0; i < matrix.RowCount; i++) {
+                            <tr>
+                                @for (int j = 0; j < matrix.ColCount; j++) {
+                                    <td>@(matrix.ElementAtOrNull(matrix.ColCount * i + j))</td>
+                                }
+                            </tr>
+                        }
+                    </table>
+                </div>
+            }
+        }
+        </div>
+</section>
+
+<section id="compression">
+    <h2>Сжатие</h2>
+    <h4>Схема Дженингса</h4>
+    @if (A.IsSymmetric) {
+        <div>
+            <div class="matrix">
+                <table>
+                    <caption>Матрица @A.Name</caption>
+                    @for (int i = 0; i < A.RowCount; i++)
+                    {
+                        <tr>
+                            @for (int j = 0; j < A.ColCount; j++)
+                            {
+                                <td>@(A.ElementAtOrNull(A.ColCount * i + j))</td>
+                            }
+                        </tr>
+                    }
+                </table>
+            </div>
+            <div class="jennings">
+                @{var JJ = (jMatrix)A;}
+                <div class="caption">Сжатая</div>
+                <div class="elements">
+                    @for (int i = 0; i < JJ.Elements.Count; i++){
+                        <div>
+                            <div class="i">@i</div>
+                            <div class="e">@(JJ.Elements[i])</div>
+                        </div>
+                        <div class="sep">,</div>
+                    }
+                </div>
+                <div class="counter">
+                    @for (int i = 0; i < JJ.Counter.Length; i++){
+                        <div>
+                            <div class="i">@i</div>
+                            <div class="e">@(JJ.Counter[i])</div>
+                        </div>
+                        <div class="sep">,</div>
+                    }
+                </div>
+                <div>Компрессия @(JJ.Compression * 100)%</div>
+            </div>
+            <div class="matrix">
+                @{var JA = (Matrix)JJ;}
+                <table>
+                    <caption>Распакованная</caption>
+                    @for (int i = 0; i < JA.RowCount; i++){
+                        <tr>
+                            @for (int j = 0; j < JA.ColCount; j++){
+                                <td>@(A.ElementAtOrNull(JA.ColCount * i + j))</td>
+                            }
+                        </tr>
+                    }
+                </table>
+            </div>
+        </div>
+    }
+    else {
+        <div>Алгоритм упаковки Дженингса работает только с симметричными матрицами</div>
+    }
+    <h4>Схема Рейнбольдта-Местеньи</h4>
+    <div>
+        <div class="matrix">
+            <table>
+                <caption>Матрица @A.Name</caption>
+                @for (int i = 0; i < A.RowCount; i++)
+                {
+                    <tr>
+                        @for (int j = 0; j < A.ColCount; j++)
+                        {
+                            <td>@(A.ElementAtOrNull(A.ColCount * i + j))</td>
+                        }
+                    </tr>
+                }
+            </table>
+        </div>
+        <div class="jennings">
+            @{var rmm = (rmMatrix)A;}
+            <div class="caption">Сжатая</div>
+            <div class="elements">
+                <div class="name">AN: </div>
+                @for (int i = 0; i < rmm.Elements.Length; i++)
+                {
+                    <div>
+                        <div class="i">@i</div>
+                        <div class="e">@(rmm.Elements[i])</div>
+                    </div>
+                    <div class="sep">,</div>
+                }
+            </div>
+            <div class="elements jr">
+                <div class="name">JR: </div>
+                @for (int i = 0; i < rmm.JR.Length; i++)
+                {
+                    <div>
+                        <div class="i">@i</div>
+                        <div class="e">@(rmm.JR[i])</div>
+                    </div>
+                    <div class="sep">,</div>
+                }
+            </div>
+            <div class="elements jc">
+                <div class="name">JC: </div>
+                @for (int i = 0; i < rmm.JC.Length; i++)
+                {
+                    <div>
+                        <div class="i">@i</div>
+                        <div class="e">@(rmm.JC[i])</div>
+                    </div>
+                    <div class="sep">,</div>
+                }
+            </div>
+            <div class="elements rn">
+                <div class="name">RN: </div>
+                @for (int i = 0; i < rmm.NR.Length; i++)
+                {
+                    <div>
+                        <div class="i">@i</div>
+                        <div class="e">@(rmm.NR[i])</div>
+                    </div>
+                    <div class="sep">,</div>
+                }
+            </div>
+            <div class="elements jr">
+                <div class="name">NC: </div>
+                @for (int i = 0; i < rmm.NC.Length; i++)
+                {
+                    <div>
+                        <div class="i">@i</div>
+                        <div class="e">@(rmm.NC[i])</div>
+                    </div>
+                    <div class="sep">,</div>
+                }
+            </div>
+            <div>Компрессия @(rmm.Compression * 100)%</div>
+        </div>
+        <div class="matrix">
+            @{var rmm_a = (Matrix)rmm;}
+            <table>
+                <caption>Распакованная</caption>
+                @for (int i = 0; i < rmm_a.RowCount; i++){
+                    <tr>
+                        @for (int j = 0; j < rmm_a.ColCount; j++)
+                        {
+                            <td>@(A.ElementAtOrNull(rmm_a.ColCount * i + j))</td>
+                        }
+                    </tr>
+                }
+            </table>
+        </div>
+    </div>
+    <h4>Схема Чанга и Густавсона (разреженный строчный формат)</h4>
+</section>
+
+<section id="addition">
+    <h2>Сложение</h2>
+    <div>
+        @{
+            Matrix C;
+            if (A.ColCount == B.ColCount && A.RowCount == B.RowCount)
+                C = B;
+            else
+                C = A;
+            var adds = new List<Matrix>() { A, C };
+            adds.Add(A + C);
+            adds.Last().Name = "A+" + C.Name;
+
+            foreach (var matrix in adds)
+            {
+                <div class="matrix">
+                    <table>
+                        <caption>@matrix.Name</caption>
+                        @for (int i = 0; i < matrix.RowCount; i++)
+                        {
+                            <tr>
+                                @for (int j = 0; j < matrix.ColCount; j++)
+                                {
+                                    <td>@(matrix.ElementAtOrNull(matrix.ColCount * i + j))</td>
+                                }
+                            </tr>
+                        }
+                    </table>
+                </div>
+            }
+            @if (A.IsSymmetric)
+            {
+                <div class="jennings">
+                    @{
+                        var JJJ = (jMatrix)A + (jMatrix)C;
+                    }
+                    <div class="caption">Сжатая A + Сжатая @C.Name</div>
+                    <div class="elements">
+                        @for (int i = 0; i < JJJ.Elements.Count; i++)
+                        {
+                            <div>
+                                <div class="i">@i</div>
+                                <div class="e">@(JJJ.Elements[i])</div>
+                            </div>
+                            <div class="sep">,</div>
+                        }
+                    </div>
+                    <div class="counter">
+                        @for (int i = 0; i < JJJ.Counter.Length; i++)
+                        {
+                            <div>
+                                <div class="i">@i</div>
+                                <div class="e">@(JJJ.Counter[i])</div>
+                            </div>
+                            <div class="sep">,</div>
+                        }
+                    </div>
+                </div>
+            }
+        }
+    </div>
+</section>
+
+<section id="perfomance">
+    <h2>Perfomance test</h2>
+    @{
+        Matrix AAA, BBB;
+        TimeMeter.TimeMeter tm = new TimeMeter.TimeMeter();
+
+        <table>
+            <tr>
+                <th>Алгоритм</th>
+                @for(int i=1; i<=5; i++) {
+                    <th>@(i*10)x@(i*10)</th>
+                    <th>@(i*10+1)x@(i*10+1)</th>
+                }
+            </tr>
+
+            @{
+                foreach (MultiplyAlgorithm alg in Enum.GetValues(typeof(MultiplyAlgorithm))){
+                    Matrix.MulAlg = alg;
+                    <tr>
+                        <td>@alg</td>
+                        @for(int i=1; i<=5; i++) {
+                            for (int j = 0; j <= 1; j++) {
+                                AAA = Matrix.GenMatrix(i * 10 + j, i * 10 + j);
+                                BBB = Matrix.GenMatrix(i * 10 + j, i * 10 + j);
+                                var t = tm.Measure(() => { var CCC = AAA * BBB; }, 5);
+                                <td>@t</td>
+                            }
+                        }
+                    </tr>
+                };
+
+                string s = "";
+                @for (int i = 1; i <= 5; i++)
+                {
+                    int dim = 10;
+                    var bcA = Matrix.GenMatrix(i * dim, i * dim);
+                    var bcB = Matrix.GenMatrix(i * dim, i * dim);
+                    var wcA = Matrix.GenMatrix(i * dim + 1, i * dim + 1);
+                    var wcB = Matrix.GenMatrix(i * dim + 1, i * dim + 1);
+                    {
+                        s += "[";
+                        foreach (MultiplyAlgorithm alg in Enum.GetValues(typeof(MultiplyAlgorithm)))
+                        {
+                            Matrix.MulAlg = alg;
+                            var t = tm.Measure(() => { var mul = bcA * bcB; }, 100);
+                            s += ", " + t.ToString();
+                            t = tm.Measure(() => { var mul = wcA * wcB; }, 100);
+                            s += ", " + t.ToString();
+                        }
+                        s += "],";
+                    }
+                }
+            }
+        </table>
+    }
+    <div id="curve_chart"></div>
+    <script type="text/javascript">
+      google.charts.load('current', {'packages':['corechart']});
+      google.charts.setOnLoadCallback(drawChart);
+
+      function drawChart() {
+        var benchmark2 = [
+                ['Вызовы', 'Circle,bc', 'Circle,wc', 'Vinograd,bc', 'Vinograd,wc', 'VinogradOpt,bc', 'VinogradOpt,wc'],
+                @s
+            ]
+        var data = google.visualization.arrayToDataTable(benchmark2);
+
+        var options = {
+          title: 'Performance',
+          //curveType: 'function',
+          legend: { position: 'bottom' }
+        };
+
+        var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
+
+        chart.draw(data, options);
+      }
+    </script>
+</section>

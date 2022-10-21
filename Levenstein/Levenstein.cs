@@ -1,4 +1,4 @@
-п»їnamespace Algorithm.Levenstein;
+п»їnamespace LevensteinDistance;
 
 using System;
 using System.Diagnostics;

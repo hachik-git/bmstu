@@ -1,6 +1,7 @@
-п»їusing Microsoft.AspNetCore.Mvc.RazorPages;
+п»їusing LevensteinDistance;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace Algorithm.Levenstein
+namespace Algorithm.LevensteinDistance
 {
     public class LevensteinModel : PageModel
     {
